@@ -1,6 +1,6 @@
 {
-  "name": "vcard-parser",
-  "version": "1.0.0",
+  "name": "@lepirlouit/vcard-parser",
+  "version": "1.0.1",
   "description": "Simple vCard parser",
   "main": "lib/vcard.js",
   "directories": {
@@ -9,7 +9,7 @@
   "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git@github.com:Heymdall/vcard.git"
+    "url": "git@github.com:lepirlouit/vcard-parser.git"
   },
   "devDependencies": {
     "jest": "^23.5.0"
@@ -21,6 +21,6 @@
     "release-major": "npm version major -m 'chore(*): major version'",
     "postversion": "git push origin master && git push --tags && npm publish"
   },
-  "author": "Aleksandr Kitov <kitov.nn@gmail.com>",
+  "author": "LePirlouit, Aleksandr Kitov <kitov.nn@gmail.com>",
   "license": "MIT"
 }

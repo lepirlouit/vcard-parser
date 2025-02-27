@@ -211,10 +211,25 @@ describe('vCard.generate', function () {
         ].join('\r\n'));
     });
 
-    it('Should ignore properties with array of empty values', function () {
+    it('Should NOT ignore properties with array of empty values', function () {
         var card = {
             adr: [
                 {value: ['','','','','','','']}
+            ]
+        };
+        var string = vCard.generate(card);
+
+        expect(string).toEqual([
+            PREFIX,
+            'ADR:;;;;;;',
+            POSTFIX
+        ].join('\r\n'));
+    });
+
+    it('Should ignore properties with array of undefined values', function () {
+        var card = {
+            adr: [
+                {value: [undefined,undefined,undefined,undefined,undefined,undefined,undefined]}
             ]
         };
         var string = vCard.generate(card);
