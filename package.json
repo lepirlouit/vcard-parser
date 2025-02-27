@@ -1,21 +1,27 @@
 {
   "name": "@lepirlouit/vcard-parser",
-  "version": "1.1.0",
+  "version": "1.4.0",
   "description": "Simple vCard parser",
-  "main": "lib/vcard.js",
-  "types": "vcard-parser.d.ts",
+  "main": "./dist/vcard.js",
+  "entry": "lib/vcard.ts",
+  "module": "./dist/vcard.mjs",
+  "types": "./dist/vcard.d.ts",
   "directories": {
     "test": "test"
   },
-  "dependencies": {},
   "repository": {
     "type": "git",
     "url": "git@github.com:lepirlouit/vcard-parser.git"
   },
   "devDependencies": {
-    "jest": "^23.5.0"
+    "@types/jest": "^29.5.14",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "tsup": "^8.4.0",
+    "typescript": "^5.7.3"
   },
   "scripts": {
+    "build": "tsup",
     "test": "jest",
     "release-patch": "npm version patch -m 'chore(*): patch version'",
     "release-minor": "npm version minor -m 'chore(*): minor version'",
@@ -23,5 +29,8 @@
     "postversion": "git push origin master && git push --tags && npm publish"
   },
   "author": "LePirlouit, Aleksandr Kitov <kitov.nn@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "files": [
+    "dist"
+  ]
 }

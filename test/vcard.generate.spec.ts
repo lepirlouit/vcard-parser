@@ -1,14 +1,14 @@
-var vCard = require('../lib/vcard');
+import * as vCard from '../lib/vcard';
 
 describe('vCard.generate', function () {
-    var PREFIX = 'BEGIN:VCARD',
+    const PREFIX = 'BEGIN:VCARD',
         POSTFIX = 'END:VCARD';
 
     it('Should generate vcard with simple property', function () {
-        var card = {
+        const card = {
             fn: [{value: 'Forest Gump'}]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -18,14 +18,14 @@ describe('vCard.generate', function () {
     });
 
     it('Should generate vcard with complex property', function () {
-        var card = {
+        const card = {
             n: [{
                 value: [
                     'Gump', 'Forrest', '', 'Mr.', ''
                 ]
             }]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -36,13 +36,13 @@ describe('vCard.generate', function () {
 
 
     it('Should generate vcard with repeated properties', function () {
-        var card = {
+        const card = {
             fn: [
                 {value: 'Forrest Gump'},
                 {value: 'Other Gump'}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -53,12 +53,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should generate vcard with metadata', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: {type: ['HOME']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -68,12 +68,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should generate vcard with multiple metadata', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: {type: ['HOME'], pref: ['1']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -83,12 +83,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should not break comma seperated type keys', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: {type: ['HOME,PREF']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -98,12 +98,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should generate vcard with multiple values of one metadata field', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: {type: ['HOME', 'CELL']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -113,12 +113,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should generate vcard with namespace', function () {
-        var card = {
+        const card = {
             email: [
                 {value: 'other@email.com', namespace: 'item1', meta: {type: ['INTERNET']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -128,14 +128,14 @@ describe('vCard.generate', function () {
     });
 
     it('Should break long lines', function () {
-        var card = {
+        const card = {
             note: [
                 {value: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. ' +
                 'Doloremque dolores eum incidunt mollitia reiciendis sed sunt temporibus ' +
                 'veniam veritatis voluptas.'}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -147,7 +147,7 @@ describe('vCard.generate', function () {
     });
 
     it('Should add version and uid field', function () {
-        var string = vCard.generate({}, true),
+        const string = vCard.generate({}, true),
             arr = string.split('\r\n');
 
         expect(arr[0]).toEqual(PREFIX);
@@ -157,10 +157,10 @@ describe('vCard.generate', function () {
     });
 
     it('Should ignore undefined properties', function () {
-        var card = {
+        const card = {
             fn: undefined
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card as unknown as vCard.vCard);
 
         expect(string).toEqual([
             PREFIX,
@@ -169,12 +169,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should ignore properties with undefined values', function () {
-        var card = {
+        const card = {
             fn: [
                 {value: undefined}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card as unknown as vCard.vCard);
 
         expect(string).toEqual([
             PREFIX,
@@ -183,12 +183,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should ignore non-required properties with empty string values', function () {
-        var card = {
+        const card = {
             url: [
                 {value: ''}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -197,12 +197,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should NOT ignore FN with empty string value', function () {
-        var card = {
+        const card = {
             fn: [
                 { value: '' }
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -212,12 +212,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should NOT ignore properties with array of empty values', function () {
-        var card = {
+        const card = {
             adr: [
                 {value: ['','','','','','','']}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -227,12 +227,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should ignore properties with array of undefined values', function () {
-        var card = {
+        const card = {
             adr: [
                 {value: [undefined,undefined,undefined,undefined,undefined,undefined,undefined]}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card as unknown as vCard.vCard);
 
         expect(string).toEqual([
             PREFIX,
@@ -241,10 +241,10 @@ describe('vCard.generate', function () {
     });
 
     it('Should ignore wrong formatted properties', function () {
-        var card = {
+        const card = {
             fn: {value: 'Wrong formatted'}
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card as unknown as vCard.vCard);
 
         expect(string).toEqual([
             PREFIX,
@@ -253,7 +253,7 @@ describe('vCard.generate', function () {
     });
 
     it('Should ignore wrong formatted meta properties', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: 'string are not allowed here'}
             ],
@@ -261,7 +261,7 @@ describe('vCard.generate', function () {
                 {value: 'admin@example.com', meta: {type: 'string'}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card as unknown as vCard.vCard);
 
         expect(string).toEqual([
             PREFIX,
@@ -271,12 +271,12 @@ describe('vCard.generate', function () {
         ].join('\r\n'));
     });
     it('Should remove line breaks', function () {
-        var card = {
+        const card = {
             adr: [
                 {value: ['sdfsdfsffsfsdsdfsfdfsdf\nfsdfdsfsdfqewe\nsdfsdf','','','',''], meta: {type: ['WORK']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
         expect(string).toEqual([
             PREFIX,
             'ADR;TYPE=WORK:sdfsdfsffsfsdsdfsfdfsdf\\nfsdfdsfsdfqewe\\nsdfsdf;;;;',
@@ -285,7 +285,7 @@ describe('vCard.generate', function () {
     });
 
     it('Should escape semicolon, colon and backslash in values', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '1;,2,;\\3;'}
             ],
@@ -293,7 +293,7 @@ describe('vCard.generate', function () {
                 {value: ['1;,2,;3;','','','','']}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -304,12 +304,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should escape semicolon and backslash in meta fields', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: {type: ['HO;,\\ME'], pref: ['1']}}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -319,12 +319,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should not convert case on extended property names', function () {
-        var card = {
+        const card = {
             'X-ABLabel': [
                 {value: 'super', namespace: 'item1'}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -334,12 +334,12 @@ describe('vCard.generate', function () {
     });
 
     it('Should not fail on undefined values', function () {
-        var card = {
+        const card = {
             tel: [
                 {value: '78884545247', meta: {'': [undefined], type: ['HO;,\\ME'], pref: ['1'] }}
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -349,7 +349,7 @@ describe('vCard.generate', function () {
     });
 
     it('Should not change my data', function () {
-        var card = {
+        const card = {
             adr: [
                 {value: ['A', '1,2', 'b']  }
             ],
@@ -357,7 +357,7 @@ describe('vCard.generate', function () {
                 {value: 'Mouse,Mikey'  }
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
@@ -376,7 +376,7 @@ describe('vCard.generate', function () {
     });
 
     it('Should use comma separator for NICKNAME,RELATED, CATEGORIES and PID fields', function () {
-        var card = {
+        const card = {
             nickname: [
                 { value: ['Jim', 'Jimmie'] }
             ],
@@ -384,7 +384,7 @@ describe('vCard.generate', function () {
                 { value: ['INTERNET', 'INFORMATION TECHNOLOGY'] }
             ]
         };
-        var string = vCard.generate(card);
+        const string = vCard.generate(card);
 
         expect(string).toEqual([
             PREFIX,
